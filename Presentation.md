@@ -133,3 +133,58 @@ However the only refresh options your user has at the moment are:
 3. Close your tab and open the page again
 
 None of these are ideal.
+
+## 3 Prompt user to refresh
+
+Let's use alertify.js to prompt the user to refresh when we have a new version of our page delivered.
+
+```bash
+yarn add alertify.js
+```
+
+In `src/registerServiceWorker.js`
+
+Add this after your imports
+
+```js
+import alertify from "alertify.js";
+
+const notifyUserAboutUpdate =  worker => {
+  alertify.confirm("new content!", () => {
+    // post message to the service worker to tell it to skip waiting.
+    // NOTE: the default service worker listens for this
+    worker.postMessage({ type: "SKIP_WAITING" });
+  });
+};
+```
+
+Here we import alertify and create an arrow function to prompt the user with.
+
+Then modify the updated() lifecycle method to
+
+```js
+    updated(registration) {
+      console.log("New content is available; please refresh.");
+      notifyUserAboutUpdate(registration.waiting);
+    },
+```
+
+Before the final closing brace `}` of the is production if statement.
+
+```js
+  let refreshing;
+  navigator.serviceWorker.addEventListener("controllerchange", function() {
+    // after controller change
+    if (refreshing) return;
+    window.location.reload();
+    refreshing = true;
+  });
+```
+
+Stop the application if running and run `yarn serve` at the command line.
+
+Refresh you page and note NOTHING CHANGES?
+
+This is becuase the service worker that is currently in use does not contain our updated instructions to prompt the user. Click skipWaiting then refresh your browser.
+
+Change the background color again, restart the server `yarn serve` and refresh your browser.
