@@ -1,6 +1,14 @@
 /* eslint-disable no-console */
 
 import { register } from "register-service-worker";
+import alertify from "alertify.js";
+
+const notifyUserAboutUpdate =  worker => {
+  alertify.confirm("new content!", () => {
+    // post message to the service worker to tell it to skip waiting.
+    worker.postMessage({ type: "SKIP_WAITING" });
+  });
+};
 
 if (process.env.NODE_ENV === "production") {
   register(`${process.env.BASE_URL}service-worker.js`, {
@@ -19,8 +27,9 @@ if (process.env.NODE_ENV === "production") {
     updatefound() {
       console.log("New content is downloading.");
     },
-    updated() {
+    updated(registration) {
       console.log("New content is available; please refresh.");
+      notifyUserAboutUpdate(registration.waiting);
     },
     offline() {
       console.log(
@@ -29,6 +38,14 @@ if (process.env.NODE_ENV === "production") {
     },
     error(error) {
       console.error("Error during service worker registration:", error);
-    }
+    },
+  });
+
+  let refreshing;
+  navigator.serviceWorker.addEventListener("controllerchange", function() {
+    // after controller change
+    if (refreshing) return;
+    window.location.reload();
+    refreshing = true;
   });
 }
