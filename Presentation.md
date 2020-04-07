@@ -60,7 +60,7 @@ Take offline... you now have an offline web page. While a purely offline experie
 
 > NOTE: No logic to determine whether or not our application runs totally offline. The hooks in registerServieWorker can be used to augment this behaviour.
 
-## 2-unamed
+## 2 First Refresh
 
 For convenience let's adjust our package.json to build and serve.
 
@@ -102,11 +102,13 @@ Precaching is the default approach taken by workbox, caching your files before t
 
 Causing an update. The build provided by the CLI is currently determining if anything has changed and updating the hash/version of the service worker.
 
-Change the background color of #app in `src/App.vue`. Stop serving the application and re-run `yarn serve
+Change the background color of #app in `src/App.vue`. Stop serving the application and re-run `yarn serve` and note that NOTHING HAPPENS.
+
+If you view the service worker in the applications tab of developer tools you'll notice.
 
 ![status waiting image](./presentation/2-status-waiting.png)
 
-Take a look at the console you should see a number of messages posted by the service worker.
+In the console you will see a number of messages posted by the service worker.
 
 ```txt
 App is being served from cache by a service worker. app.44777ddd.js?__WB_REVISION__=a929f9a3b4f55f5cf390:1
@@ -123,3 +125,11 @@ New content is available; please refresh. app.44777ddd.js?__WB_REVISION__=a929f9
 ```
 
 We could choose to skip waiting, but that's not really an experience a user will have.
+
+However the only refresh options your user has at the moment are:
+
+1. Navigate into the developer tools and skipWaiting. Then refresh.
+2. Forced refresh of the browser (e.g. Ctrl F5, Cmd R)
+3. Close your tab and open the page again
+
+None of these are ideal.
