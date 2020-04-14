@@ -149,7 +149,7 @@ Add this after your imports
 ```js
 import alertify from "alertify.js";
 
-const notifyUserAboutUpdate = (worker) => {
+const notifyUserAboutUpdate = worker => {
   alertify.confirm("new content!", () => {
     // post message to the service worker to tell it to skip waiting.
     // NOTE: the default service worker listens for this
@@ -190,3 +190,5 @@ This is becuase the service worker that is currently in use does not contain our
 Change the background color again, restart the server `yarn serve` and refresh your browser.
 
 ## 4-prompt-using-vue-instance
+
+DONT USE 4 - no need to go into Vue usage
