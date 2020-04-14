@@ -149,7 +149,7 @@ Add this after your imports
 ```js
 import alertify from "alertify.js";
 
-const notifyUserAboutUpdate =  worker => {
+const notifyUserAboutUpdate = (worker) => {
   alertify.confirm("new content!", () => {
     // post message to the service worker to tell it to skip waiting.
     // NOTE: the default service worker listens for this
@@ -172,13 +172,13 @@ Then modify the updated() lifecycle method to
 Before the final closing brace `}` of the is production if statement.
 
 ```js
-  let refreshing;
-  navigator.serviceWorker.addEventListener("controllerchange", function() {
-    // after controller change
-    if (refreshing) return;
-    window.location.reload();
-    refreshing = true;
-  });
+let refreshing;
+navigator.serviceWorker.addEventListener("controllerchange", function() {
+  // after controller change
+  if (refreshing) return;
+  window.location.reload();
+  refreshing = true;
+});
 ```
 
 Stop the application if running and run `yarn serve` at the command line.
@@ -188,3 +188,5 @@ Refresh you page and note NOTHING CHANGES?
 This is becuase the service worker that is currently in use does not contain our updated instructions to prompt the user. Click skipWaiting then refresh your browser.
 
 Change the background color again, restart the server `yarn serve` and refresh your browser.
+
+## 4-prompt-using-vue-instance

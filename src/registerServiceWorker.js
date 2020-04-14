@@ -1,10 +1,9 @@
 /* eslint-disable no-console */
 
 import { register } from "register-service-worker";
-import alertify from "alertify.js";
 
-const notifyUserAboutUpdate =  worker => {
-  alertify.confirm("new content!", () => {
+const notifyUserAboutUpdate = worker => {
+  window.vueInstance.$emit("service-worker-updated", () => {
     // post message to the service worker to tell it to skip waiting.
     worker.postMessage({ type: "SKIP_WAITING" });
   });

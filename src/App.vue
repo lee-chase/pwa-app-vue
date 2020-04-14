@@ -13,6 +13,14 @@ export default {
   components: {
     HelloWorld,
   },
+  methods: {
+    whenServiceWorkderUpdated(ok) {
+      // eslint-disable-next-line
+      if (confirm("An update is availabel. Refresh?")) {
+        ok();
+      }
+    },
+  },
 };
 </script>
 
@@ -25,6 +33,6 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 
-  background-color: lightcoral;
+  background-color: palegoldenrod;
 }
 </style>
